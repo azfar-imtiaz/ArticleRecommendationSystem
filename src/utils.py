@@ -32,15 +32,18 @@ def load_user_data(filename):
 
 def load_book_data(filename):
     books_data = {}
+    book_name_to_id_mapping = {}
     with open(filename, 'r') as rfile:
         reader = csv.DictReader(rfile)
         for index, elem in enumerate(reader):
             book_id = int(elem['Id'])
             book_name = elem['Name']
+            book_name_to_id_mapping[book_name] = book_id
             book_rating = elem['Rating']
-            book_language = elem['Language']
-            # NOTE: This takes too long when loading data for all books
+            # NOTE: Detecting language of book name takes too long when loading data for all books
             # book_language = detect(book_name)
+            book_language = elem['Language']
+            book_review_count = int(elem['CountsOfReview'])
             try:
                 book_num_pages = elem['pagesNumber']
             except KeyError:
@@ -52,7 +55,8 @@ def load_book_data(filename):
                 'id': book_id,
                 'rating': book_rating,
                 'language': book_language,
-                'num_pages': book_num_pages
+                'num_pages': book_num_pages,
+                'num_reviews': book_review_count
             }
 
-    return books_data
+    return books_data, book_name_to_id_mapping
