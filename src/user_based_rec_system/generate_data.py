@@ -6,6 +6,7 @@ import pandas as pd
 sys.path.append("..")
 
 import config
+import utils
 
 
 def generate_book_id_mapping():
@@ -25,18 +26,12 @@ def generate_book_id_mapping():
 
 
 def generate_dataframe():
-    # NOTE: Move this inside a separate function inside utils.py
-    try:
-        users_data = joblib.load(config.USERS_DATA_PKL)
-    except FileNotFoundError:
-        from generate_data_generic import generate_user_data
-        generate_user_data()
-        users_data = joblib.load(config.USERS_DATA_PKL)
+    users_data = utils.load_user_data_from_pickle()
     
-    # NOTE: Move this inside a separate function inside utils.py
     try:
         book_id_mapping = joblib.load(config.BOOK_ID_MAPPING_PKL)
     except FileNotFoundError:
+        # If book-id mapping pickle not found, generate it
         generate_book_id_mapping()
         book_id_mapping = joblib.load(config.BOOK_ID_MAPPING_PKL)
 

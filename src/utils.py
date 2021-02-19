@@ -1,7 +1,9 @@
 import csv
+import joblib
 from langdetect import detect
 from collections import defaultdict
 
+import config
 import constants
 
 
@@ -60,3 +62,14 @@ def load_book_data(filename):
             }
 
     return books_data, book_name_to_id_mapping
+
+
+def load_user_data_from_pickle():
+    try:
+        users_data = joblib.load(config.USERS_DATA_PKL)
+    except FileNotFoundError:
+        from generate_data_generic import generate_user_data
+        generate_user_data()
+        users_data = joblib.load(config.USERS_DATA_PKL)
+
+    return users_data

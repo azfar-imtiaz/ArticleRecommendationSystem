@@ -46,7 +46,6 @@ def generate_book_data():
         book_names_to_id_mapping.update(book_name_id_map)
 
     return all_books_data, book_names_to_id_mapping
-    users_books_matrix = np.zeros(num_users, num_books)
 
 
 if __name__ == '__main__':
